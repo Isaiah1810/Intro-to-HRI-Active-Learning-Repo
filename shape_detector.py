@@ -56,7 +56,22 @@ def detect_shapes(mask):
             shapes.append(len(approx1))
     return shapes
 
-def get_shapes(img):
+def get_shapes(sides, color):
+    result = []
+    for s in sides:
+        match s:
+            case 3:
+                result.append(f"{color} triangle")
+            case 4:
+                result.append(f"{color} square")
+            case 8:
+                result.append(f"{color} circle")
+            case _:
+                result.append(f"{color} other")
+    return result
+        
+
+def get_colors_shapes(img):
     pink_mask = pink_thresh(img)
     orange_mask = orange_thresh(img)
     green_mask = green_thresh(img)
@@ -65,10 +80,10 @@ def get_shapes(img):
     orange_shapes = detect_shapes(orange_mask)
     green_shapes = detect_shapes(green_mask)
     yellow_shapes = detect_shapes(yellow_mask)
-    print("Pink shapes are", pink_shapes)
-    print("Orange shapes are", orange_shapes)
-    print("Green shapes are", green_shapes)
-    print("Yellow shapes are", yellow_shapes)
+    print("Pink shapes are", get_shapes(pink_shapes, "Pink"))
+    print("Orange shapes are", get_shapes(orange_shapes, "Orange"))
+    print("Green shapes are", get_shapes(green_shapes, "Green"))
+    print("Yellow shapes are", get_shapes(yellow_shapes, "Yellow"))
 
-img = cv2.imread("shapes.jpg")
-get_shapes(img)
+img = cv2.imread("shapes.png")
+get_colors_shapes(img)
