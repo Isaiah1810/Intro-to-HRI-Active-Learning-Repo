@@ -49,7 +49,7 @@ def detect_shapes(mask):
     shapes = []
     for c in conts:
         area = cv2.contourArea(c)
-        if (area>200):
+        if (area>1000):
             peri1 = cv2.arcLength(c, True)
             approx1 = cv2.approxPolyDP(c, 0.02*peri1, True)
             # print(len(approx1))
@@ -85,5 +85,6 @@ def get_colors_shapes(img):
     print("Green shapes are", get_shapes(green_shapes, "Green"))
     print("Yellow shapes are", get_shapes(yellow_shapes, "Yellow"))
 
-img = cv2.imread("shapes.png")
-get_colors_shapes(img)
+if __name__ == "__main__":
+    img = cv2.imread("shapes.jpg")
+    get_colors_shapes(img)

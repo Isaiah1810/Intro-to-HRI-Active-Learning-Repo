@@ -2,6 +2,7 @@ from mistyPy.Robot import Robot
 import cv2
 import numpy as np
 import time
+from shape_detector import get_colors_shapes 
 ip="172.26.232.220"
 
 
@@ -27,5 +28,4 @@ def detect_color(frame):
 if __name__ == "__main__":
     rob = Robot(ip)
     cap = begin_stream(rob)
-    cv2.imshow("frame",get_frame(cap))
-    cv2.waitKey()
+    get_colors_shapes(get_frame(cap))

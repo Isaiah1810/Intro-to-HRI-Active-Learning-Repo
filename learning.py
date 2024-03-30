@@ -16,7 +16,7 @@ def generate_all_hypotheses():
     return all_hypotheses, consistencies
 
 def is_consistent(hypothesis, example):
-    for i in range(len(hypothesis)):
+    for i in range(len(example)):
         if hypothesis[i] != '*' and hypothesis[i] != example[i]:
             return False
     return True
@@ -26,7 +26,6 @@ def concept_learning(example, H, consistencies):
     label = example[-1]
     concept = example[-2]
     index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
-
     V = []
     for count, hypothesis in enumerate(H):
         if is_consistent(hypothesis, example[:-2]):
@@ -75,50 +74,50 @@ def predict_label(example, H, consistencies):
 #                 V[1][i] = '*'
 
 
+if __name__ == "__main__":
+    # Define target concepts
+    house = ['pink', 'triangle', '*', '*', 'square', '*']
+    snowman = ['*', 'circle', 'small', '*', 'circle', '*']
+    alien = ['green', 'circle', '*', 'green', '*', '*']
+    icecream = ['*', 'circle', '*', 'yellow', 'triangle', '*']
 
-# Define target concepts
-house = ['pink', 'triangle', '*', '*', 'square', '*']
-snowman = ['*', 'circle', 'small', '*', 'circle', '*']
-alien = ['green', 'circle', '*', 'green', '*', '*']
-icecream = ['*', 'circle', '*', 'yellow', 'triangle', '*']
+    # Initialize H and consistency arrays for each concept
+    H, consistencies = generate_all_hypotheses()
 
-# Initialize H and consistency arrays for each concept
-H, consistencies = generate_all_hypotheses()
+    # Labeled examples
+    labeled_examples = [
+        ['pink', 'triangle', 'large', 'yellow', 'square', 'large', 'house', '+'],
+        ['orange', 'triangle', 'large', 'yellow', 'square', 'large', 'house', '-'],
+        ['pink', 'triangle', 'small', 'yellow', 'square', 'small', 'house', '+']
+        # ['pink', 'circle', 'large', 'yellow', 'square', 'small', 'house', '-'],
+        # ['orange', 'triangle', 'large', 'yellow', 'square', 'small', 'house', '-']
+        # ['pink', 'triangle', 'large', 'yellow', 'square', 'small',  'snowman', '-']
+    ]
 
-# Labeled examples
-labeled_examples = [
-    ['pink', 'triangle', 'large', 'yellow', 'square', 'large', 'house', '+'],
-    ['orange', 'triangle', 'large', 'yellow', 'square', 'large', 'house', '-'],
-    ['pink', 'triangle', 'small', 'yellow', 'square', 'small', 'house', '+']
-    # ['pink', 'circle', 'large', 'yellow', 'square', 'small', 'house', '-'],
-    # ['orange', 'triangle', 'large', 'yellow', 'square', 'small', 'house', '-']
-    # ['pink', 'triangle', 'large', 'yellow', 'square', 'small',  'snowman', '-']
-]
+    # Perform concept learning
+    for example in labeled_examples:
+        learned_hypotheses = concept_learning(example, H, consistencies)
 
-# Perform concept learning
-for example in labeled_examples:
-    learned_hypotheses = concept_learning(example, H, consistencies)
+    # Print learned hypotheses
+    print("Learned Hypotheses:")
+    for i, hypotheses in enumerate(learned_hypotheses):
+        print(f"Concept {i+1}:")
+        for hypothesis in hypotheses:
+            print(hypothesis)
+        print()
 
-# Print learned hypotheses
-print("Learned Hypotheses:")
-for i, hypotheses in enumerate(learned_hypotheses):
-    print(f"Concept {i+1}:")
-    for hypothesis in hypotheses:
-        print(hypothesis)
-    print()
+    # Predictions
+    new_instances = [
+        ['pink', 'circle', 'large', 'yellow', 'square', 'small', 'house'],  # Example 1
+        ['green', 'triangle', 'large', 'yellow', 'circle', 'small', 'house'],  # Example 2
+        ['pink', 'triangle', 'large', 'yellow', 'square', 'large', 'house'],  # Example 3
+        ['pink', 'triangle', 'large', 'green', 'square', 'small', 'house'],  # Example 4
+    ]
 
-# Predictions
-new_instances = [
-    ['pink', 'circle', 'large', 'yellow', 'square', 'small', 'house'],  # Example 1
-    ['green', 'triangle', 'large', 'yellow', 'circle', 'small', 'house'],  # Example 2
-    ['pink', 'triangle', 'large', 'yellow', 'square', 'large', 'house'],  # Example 3
-    ['pink', 'triangle', 'large', 'green', 'square', 'small', 'house'],  # Example 4
-]
-
-for instance in new_instances:
-    label, confidence = predict_label(instance, H, consistencies)
-    print("Instance:", instance)
-    print("Predicted Label:", label)
-    print("Confidence:", confidence)
-    print()
+    for instance in new_instances:
+        label, confidence = predict_label(instance, H, consistencies)
+        print("Instance:", instance)
+        print("Predicted Label:", label)
+        print("Confidence:", confidence)
+        print()
 
