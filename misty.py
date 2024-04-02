@@ -5,7 +5,6 @@ import time
 from shape_detector import get_colors_shapes 
 ip="172.26.232.220"
 
-
 def begin_stream(rob, port=1935, width=640, height=480):
     rob.enable_av_streaming_service()
     rob.start_av_streaming(url=f"rtspd:{port}", width=width, height=height)

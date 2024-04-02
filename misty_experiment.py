@@ -1,4 +1,9 @@
 import learning
+from mistyPy.Robot import Robot
+import numpy as np
+from shape_detector import get_colors_shapes 
+from misty import *
+ip="172.26.232.220"
 def generate_mod_hypotheses():
     colors = ['pink', 'green', 'yellow', 'orange']
     shapes = ['square', 'triangle', 'circle']
@@ -73,16 +78,22 @@ def make_query(curr_example, hypotheses, consistencies, H):
         diff_block = get_one_away(curr_example, new_query)
         match diff_block:
             case 1:
-                print(f"Replace bottom piece with {new_query[3]} {new_query[4]} {new_query[5]}")
+                string = f"Can you replace the bottom piece with a {new_query[5]} {new_query[3]} {new_query[4]}? "
+                print(string)
+                rob.speak(string)
                 return
             case 2:
-                print(f"Replace top piece with {new_query[0]} {new_query[1]} {new_query[2]}")
+                string = f"Can you replace the top piece with a {new_query[2]} {new_query[0]} {new_query[1]}? "
+                print(string)
+                rob.speak(string)
                 return
             case -1:
                 assert(1 == 2)
     else:
         best_query = examples[0][1]
-        print(f"Replace top piece with {best_query[0]} {best_query[1]} {best_query[2]}")
+        string = f"Can you replace the top piece with a {best_query[2]} {best_query[0]} {best_query[1]}? "
+        print(string)
+        rob.speak(string)
 
 H, consistencies = learning.generate_all_hypotheses()
 H_LEN = len(H)
@@ -96,6 +107,8 @@ def step():
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(example, H, consistencies)
+            rob.speak("Ok")
+            time.sleep(2)
             num_hypothesis = len(learned_hypothesis)
             print(num_hypothesis)
             if(num_hypothesis >= hypothesis_size[index]):
@@ -103,12 +116,25 @@ def step():
                     print("Uninformative label")
                 make_query(example, learned_hypothesis, consistencies, H)
             hypothesis_size[index] = num_hypothesis
+            rob.speak("Your turn")
 
         case "2":
             new_instance = input("give new instance\n").split()
             label, confidence = learning.predict_label(new_instance, H, consistencies)
+            match label:
+                case "+":
+                    rob.speak(f"Yes, this is a {new_instance[-1]}")
+                case "-":
+                    rob.speak(f"No, it is not")
+                case "?":
+                    rob.speak(f"I'm not sure what this is yet")
             print("Instance:", new_instance)
             print("Predicted Label:", label)
             print("Confidence:", confidence)
+            rob.speak("Your turn")
         case _:
             return
+
+rob = Robot(ip)
+while True:
+    step()
