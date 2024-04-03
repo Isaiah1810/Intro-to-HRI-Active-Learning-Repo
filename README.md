@@ -10,4 +10,4 @@ cd Python-SDK
 
 pip install .
 
-To run, run misty_experiment.py
+To run, use python ./misty_experiment.py
