@@ -108,7 +108,7 @@ def step():
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(example, H, consistencies)
             if non_verbal : rob.start_action("head-up-down-nod")
-            rob.speak("Oh K")
+            rob.speak("O kay")
             if non_verbal : rob.start_action("think")
             num_hypothesis = len(learned_hypothesis)
             print(num_hypothesis)
@@ -145,5 +145,7 @@ if (non_verbal_input == "y"):
     non_verbal = True
 else:
     non_verbal = False
+rob.speak("Hi there! I'm Misty! Nice to meet you!")
+if non_verbal : rob.start_action("hi")
 while True:
     step()
