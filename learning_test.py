@@ -28,10 +28,8 @@ def predict_label_query(example, H, consistencies):
                 negative_count += 1
     if positive_count > negative_count:
         label = '+'
-    elif negative_count > positive_count:
+    else: 
         label = '-'
-    else:
-        label = '?'
     return positive_count - negative_count
 
 #Hamming distance between the two hypothesis(total number of different things)

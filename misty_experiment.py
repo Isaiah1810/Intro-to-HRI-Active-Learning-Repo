@@ -3,7 +3,7 @@ from mistyPy.Robot import Robot
 import numpy as np
 from shape_detector import get_colors_shapes 
 from misty import *
-ip="172.26.232.220"
+ip="192.168.1.3"
 def generate_mod_hypotheses():
     colors = ['pink', 'green', 'yellow', 'orange']
     shapes = ['square', 'triangle', 'circle']
@@ -107,8 +107,9 @@ def step():
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(example, H, consistencies)
-            rob.speak("Ok")
-            time.sleep(2)
+            if non_verbal : rob.start_action("head-up-down-nod")
+            rob.speak("Oh K")
+            if non_verbal : rob.start_action("think")
             num_hypothesis = len(learned_hypothesis)
             print(num_hypothesis)
             if(num_hypothesis >= hypothesis_size[index]):
@@ -121,10 +122,13 @@ def step():
         case "2":
             new_instance = input("give new instance\n").split()
             label, confidence = learning.predict_label(new_instance, H, consistencies)
+            if non_verbal : rob.start_action("think")
             match label:
                 case "+":
+                    if non_verbal : rob.start_action("admiration")
                     rob.speak(f"Yes, this is a {new_instance[-1]}")
                 case "-":
+                    if non_verbal : rob.start_action("fear")
                     rob.speak(f"No, it is not")
                 case "?":
                     rob.speak(f"I'm not sure what this is yet")
@@ -136,5 +140,10 @@ def step():
             return
 
 rob = Robot(ip)
+non_verbal_input = input("Do you want non-verbal mode? [y/n] \n")
+if (non_verbal_input == "y"):
+    non_verbal = True
+else:
+    non_verbal = False
 while True:
     step()
