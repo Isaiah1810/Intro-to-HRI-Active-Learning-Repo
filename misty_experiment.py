@@ -104,6 +104,7 @@ def step():
     match choice:
         case "1":
             example = input("give example\n").split()
+            if (example == 'n'): return
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(example, H, consistencies)
@@ -121,6 +122,8 @@ def step():
 
         case "2":
             new_instance = input("give new instance\n").split()
+            if (new_instance == 'n'):
+                return
             label, confidence = learning.predict_label(new_instance, H, consistencies)
             if non_verbal : rob.start_action("think")
             match label:
@@ -140,6 +143,7 @@ def step():
             return
 
 rob = Robot(ip)
+rob.start_action("body-reset")
 non_verbal_input = input("Do you want non-verbal mode? [y/n] \n")
 if (non_verbal_input == "y"):
     non_verbal = True
