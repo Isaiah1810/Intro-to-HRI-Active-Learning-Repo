@@ -104,7 +104,7 @@ def step():
     match choice:
         case "1":
             example = input("give example\n").split()
-            if (example == 'n'): return
+            if (example[0] != "pink" or 'orange' or 'yellow' or 'green'): return
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(example, H, consistencies)
@@ -122,8 +122,8 @@ def step():
 
         case "2":
             new_instance = input("give new instance\n").split()
-            if (new_instance == 'n'):
-                return
+            if (new_instance != "pink" or 'orange' or 'yellow' or 'green'): return
+            
             label, confidence = learning.predict_label(new_instance, H, consistencies)
             if non_verbal : rob.start_action("think")
             match label:
