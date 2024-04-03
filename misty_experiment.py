@@ -108,21 +108,22 @@ def step():
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(example, H, consistencies)
-            if non_verbal : rob.start_action("head-up-down-nod")
-            rob.speak("O kay")
             if non_verbal : rob.start_action("think")
             num_hypothesis = len(learned_hypothesis)
+            if non_verbal : rob.start_action("head-up-down-nod")
+            rob.speak("O kay")
             print(num_hypothesis)
             if(num_hypothesis >= hypothesis_size[index]):
                 if (num_hypothesis == hypothesis_size[index]):
                     print("Uninformative label")
                 make_query(example, learned_hypothesis, consistencies, H)
+                
             hypothesis_size[index] = num_hypothesis
             rob.speak("Your turn")
 
         case "2":
             new_instance = input("give new instance\n").split()
-            if (new_instance not in ['pink', 'orange', 'yellow', 'green']): return
+            if (new_instance[0] not in ['pink', 'orange', 'yellow', 'green']): return
 
             label, confidence = learning.predict_label(new_instance, H, consistencies)
             if non_verbal : rob.start_action("think")
@@ -149,7 +150,7 @@ if (non_verbal_input == "y"):
     non_verbal = True
 else:
     non_verbal = False
-rob.speak("Hi there! I'm Misty! Nice to meet you!")
+rob.speak("Welcome back! I'm excited to learn again!")
 if non_verbal : rob.start_action("hi")
 while True:
     step()
