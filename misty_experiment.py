@@ -127,8 +127,37 @@ def step():
     match choice:
         case "1":
             example = input("give example\n").split()
-            if (example[0] not in ['pink', 'orange', 'yellow', 'green']):
+            if (example[0] not in ['p', 'o', 'y', 'g']):
                 return
+            input_array = []
+            for c in example:
+                match c:
+                    case "p":
+                        input_array.append('pink')
+                    case "o":
+                        input_array.append('orange')
+                    case "y":
+                        input_array.append("yellow")
+                    case "g":
+                        input_array.append('green')
+                    case "sq":
+                        input_array.append('square')
+                    case "c":
+                        input_array.append("circle")
+                    case "t":
+                        input_array.append('triangle')
+                    case "sm":
+                        input_array.append('small')
+                    case "l":
+                        input_array.append("large")
+                    case "sn":
+                        input_array.append("snowman")
+                    case "h":
+                        input_array.append("house")
+                    case _:
+                        pass
+            example = input_array
+            print(example)
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(
@@ -209,11 +238,14 @@ if (non_verbal_input == "y"):
     non_verbal = True
 else:
     non_verbal = False
-rob.speak("Welcome back! I'm excited to learn from you again!")
+rob.speak("Hello, I'm Misty. It's nice to meet you!")
+#rob.speak("Welcome back! I'm excited to learn from you again!")
 if non_verbal:
     rob.start_action("hi")
 while True:
     try:
         step()
+    except KeyboardInterrupt:
+        quit()
     except:
         pass
