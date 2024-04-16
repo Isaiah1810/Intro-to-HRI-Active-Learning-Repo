@@ -154,10 +154,13 @@ def step():
                         input_array.append("snowman")
                     case "h":
                         input_array.append("house")
+                    case "-":
+                        input_array.append("-")
+                    case "+":
+                        input_array.append("+")
                     case _:
                         pass
             example = input_array
-            print(example)
             concept = example[-2]
             index = ['house', 'snowman', 'alien', 'icecream'].index(concept)
             learned_hypothesis = learning.concept_learning(
@@ -179,9 +182,36 @@ def step():
 
         case "2":
             new_instance = input("give new instance\n").split()
-            if (new_instance[0] not in ['pink', 'orange', 'yellow', 'green']):
+            if (new_instance[0] not in ['p', 'o', 'y', 'g']):
                 return
-
+            input_array = []
+            for c in new_instance:
+                match c:
+                    case "p":
+                        input_array.append('pink')
+                    case "o":
+                        input_array.append('orange')
+                    case "y":
+                        input_array.append("yellow")
+                    case "g":
+                        input_array.append('green')
+                    case "sq":
+                        input_array.append('square')
+                    case "c":
+                        input_array.append("circle")
+                    case "t":
+                        input_array.append('triangle')
+                    case "sm":
+                        input_array.append('small')
+                    case "l":
+                        input_array.append("large")
+                    case "sn":
+                        input_array.append("snowman")
+                    case "h":
+                        input_array.append("house")
+                    case _:
+                        pass
+            new_instance = input_array
             label, confidence = learning.predict_label(
                 new_instance, H, consistencies)
             if non_verbal:
